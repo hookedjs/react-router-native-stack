@@ -1,4 +1,5 @@
 import { FADE_VERTICAL } from './animationTypes';
+
 export default function getTiming(animationType, transitionType) {
   switch (animationType) {
     case FADE_VERTICAL:

@@ -6,6 +6,7 @@ import {
   CUBE,
   NONE
 } from './animationTypes';
+
 export default function getDimension(animationType, width, height) {
   switch (animationType) {
     case SLIDE_HORIZONTAL:

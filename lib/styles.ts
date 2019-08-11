@@ -1,6 +1,8 @@
 import { Platform, StyleSheet } from 'react-native';
+
 const HEADER_HEIGHT = Platform.OS === 'ios' ? 44 : 56;
 const STATUSBAR_HEIGHT = Platform.OS === 'ios' ? 20 : 0;
+
 export default StyleSheet.create({
   stackContainer: {
     flex: 1,

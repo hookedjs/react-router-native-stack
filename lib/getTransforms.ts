@@ -1,5 +1,6 @@
 import { PUSH, POP } from './transitionTypes';
 import { SLIDE_HORIZONTAL, SLIDE_VERTICAL, FADE_VERTICAL, CUBE } from './animationTypes';
+
 export default function getTransforms(
   width,
   height,
@@ -13,25 +14,38 @@ export default function getTransforms(
       elevation: 1,
       transform: [{ translateX: animation }]
     };
+
     if (transitionType === PUSH && screenIndex === 1) {
-      return Object.assign({ left: width, right: -width }, baseStyle);
+      return {
+        left: width,
+        right: -width,
+        ...baseStyle
+      };
     } else if (transitionType === POP && screenIndex === 1) {
       return baseStyle;
     }
+
     return null;
   }
+
   if (animationType === SLIDE_VERTICAL) {
     const baseStyle = {
       elevation: 1,
       transform: [{ translateY: animation }]
     };
     if (transitionType === PUSH && screenIndex === 1) {
-      return Object.assign({ top: height, bottom: -height }, baseStyle);
+      return {
+        top: height,
+        bottom: -height,
+        ...baseStyle
+      };
     } else if (transitionType === POP && screenIndex === 1) {
       return baseStyle;
     }
+
     return null;
   }
+
   if (animationType === FADE_VERTICAL) {
     const inputRange = [-height, 0, height];
     const baseStyle = {
@@ -44,34 +58,34 @@ export default function getTransforms(
         }
       ]
     };
+
     if (transitionType === PUSH && screenIndex === 1) {
-      return Object.assign(
-        {
-          top: height / 3,
-          bottom: -height / 3,
-          opacity: animation.interpolate({
-            inputRange,
-            outputRange: [1, 0, 1]
-          })
-        },
-        baseStyle
-      );
+      return {
+        top: height / 3,
+        bottom: -height / 3,
+        opacity: animation.interpolate({
+          inputRange,
+          outputRange: [1, 0, 1]
+        }),
+        ...baseStyle
+      };
     } else if (transitionType === POP && screenIndex === 1) {
-      return Object.assign(
-        {
-          opacity: animation.interpolate({
-            inputRange,
-            outputRange: [0, 1, 0]
-          })
-        },
-        baseStyle
-      );
+      return {
+        opacity: animation.interpolate({
+          inputRange,
+          outputRange: [0, 1, 0]
+        }),
+        ...baseStyle
+      };
     }
+
     return null;
   }
+
   if (animationType === CUBE) {
     const extraStyling = {};
     let screenPosition = 0;
+
     if (transitionType === PUSH && screenIndex === 1) {
       screenPosition = -width;
       extraStyling.elevation = 1;
@@ -79,14 +93,17 @@ export default function getTransforms(
       screenPosition = width;
       extraStyling.elevation = 1;
     }
+
     const translateX = animation.interpolate({
       inputRange: [screenPosition - width, screenPosition, screenPosition + width],
       outputRange: [-width / 2, 0, width / 2]
     });
+
     const rotateY = animation.interpolate({
       inputRange: [screenPosition - width, screenPosition, screenPosition + width],
       outputRange: ['-60deg', '0deg', '60deg']
     });
+
     const translateXAfterRotate = animation.interpolate({
       inputRange: [
         screenPosition - width,
@@ -97,17 +114,17 @@ export default function getTransforms(
       ],
       outputRange: [-width, -width / 2.38, 0, width / 2.38, width]
     });
-    return Object.assign(
-      {
-        transform: [
-          { perspective: width },
-          { translateX },
-          { rotateY },
-          { translateX: translateXAfterRotate }
-        ]
-      },
-      extraStyling
-    );
+
+    return {
+      transform: [
+        { perspective: width },
+        { translateX },
+        { rotateY },
+        { translateX: translateXAfterRotate }
+      ],
+      ...extraStyling
+    };
   }
+
   return null;
 }
